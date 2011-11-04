@@ -1,0 +1,3 @@
+This method public function getDayNumberWithSmallestTemperatureSpread() {} has to be excluded from FileParser.php - 
+it has nothing todo with parsing the file, it's processing data for a certain task. I think there should be a 'Weather'
+class or something.
