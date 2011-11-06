@@ -18,7 +18,7 @@ class Fileparser {
             if (!empty($lineMatched)) {
                 $lineMatched[0]   = trim($lineMatched[0]);
                 $unfilteredValues = explode(' ', $lineMatched[0]);
-                $values = $this->filterValues($unfilteredValues);
+                $values           = $this->filterValues($unfilteredValues);
                 array_push($this->dayAndTemperatures, $values);
                 
                 unset($unfilteredValues, $value, $values, $lineMatched);
@@ -33,6 +33,7 @@ class Fileparser {
         
         foreach ($unfilteredValues as $value) {
             if (!empty($value)) {
+                // intval() is a bit dangerous here
                 array_push($values, intval($value));
             }
         }
@@ -43,7 +44,7 @@ class Fileparser {
     
     public function getDayWithSmallestTemperatureSpread() {
         $smallestSpread = 9999;
-        $day = false;
+        $day = NULL;
         
         foreach ($this->dayAndTemperatures as $key => $values) {
             $spread = $this->calculateTemperatureSpread($key);
@@ -60,6 +61,7 @@ class Fileparser {
     public function calculateTemperatureSpread($key) {
         $maxTemperature = $this->dayAndTemperatures[$key][1];
         $minTemperature = $this->dayAndTemperatures[$key][2];
+        
         return $maxTemperature - $minTemperature;
     }
 }
