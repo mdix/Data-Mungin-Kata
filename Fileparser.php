@@ -14,25 +14,31 @@ class Fileparser {
     
     public function extractNeededValues() {
         foreach ($this->fileContents as $line) {
-            preg_match('/^\s*\d+\s*\d+.\s*\d+./', $line, $elem);
-            if (!empty($elem)) {
-                $elem[0] = trim($elem[0]);
-                $unfilteredValues = explode(' ', $elem[0]);
-
-                // filter empty values and remove non digits (like asteriks)
-                // @TODO: exclude!
-                $values = array();
-                foreach ($unfilteredValues as $value) {
-                    if (!empty($value)) {
-                        array_push($values, intval($value));
-                    }
-                }
-                
+            preg_match('/^\s*\d+\s*\d+.\s*\d+./', $line, $lineMatched);
+            if (!empty($lineMatched)) {
+                $lineMatched[0]   = trim($lineMatched[0]);
+                $unfilteredValues = explode(' ', $lineMatched[0]);
+                $values = $this->filterValues($unfilteredValues);
                 array_push($this->dayAndTemperatures, $values);
-                unset($unfilteredValues, $value, $values, $elem);
+                
+                unset($unfilteredValues, $value, $values, $lineMatched);
             }
         }
         unset($line);
+    }
+    
+    // filter empty values and remove non digits (like asteriks)
+    public function filterValues($unfilteredValues) {
+        $values = array();
+        
+        foreach ($unfilteredValues as $value) {
+            if (!empty($value)) {
+                array_push($values, intval($value));
+            }
+        }
+        unset($unfilteredValues, $value);
+        
+        return $values;
     }
     
     public function getDayWithSmallestTemperatureSpread() {
@@ -46,6 +52,7 @@ class Fileparser {
                 $day = $this->dayAndTemperatures[$key][0];
             }
         }
+        unset($key, $values);
         
         return $day;
     }
@@ -55,6 +62,5 @@ class Fileparser {
         $minTemperature = $this->dayAndTemperatures[$key][2];
         return $maxTemperature - $minTemperature;
     }
-
 }
 ?>

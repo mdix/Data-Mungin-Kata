@@ -40,6 +40,19 @@ class FileparserTest extends PHPUnit_Framework_TestCase {
         
         $this->assertArrayNotHasKey(30, $this->fileparserObj->dayAndTemperatures); // proper end
     }
+    
+    public function testFilterValues() {
+        $this->assertInternalType('array', $this->fileparserObj->filterValues(array()));
+        
+        $this->assertArrayHasKey(0, $this->fileparserObj->filterValues(array("", "", "1", "", "33", "20", "")));
+        $this->assertArrayHasKey(1, $this->fileparserObj->filterValues(array("", "", "1", "", "33", "20", "")));
+        $this->assertArrayHasKey(2, $this->fileparserObj->filterValues(array("", "", "1", "", "33", "20", "")));
+        $this->assertArrayNotHasKey(3, $this->fileparserObj->filterValues(array("", "", "1", "", "33", "20", "")));
+        
+        $this->assertContains(1, $this->fileparserObj->filterValues(array("", "", "1", "", "33", "20", "")));
+        $this->assertContains(33, $this->fileparserObj->filterValues(array("", "", "1", "", "33", "20", "")));
+        $this->assertContains(20, $this->fileparserObj->filterValues(array("", "", "1", "", "33", "20", "")));
+    }
 
     public function testGetDayWithSmallestTemperatureSpread() {
         $this->assertEquals(14, $this->fileparserObj->getDayWithSmallestTemperatureSpread()); // should return day 14
@@ -51,6 +64,5 @@ class FileparserTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(33, $this->fileparserObj->calculateTemperatureSpread(25)); // day 26
         $this->assertEquals(45, $this->fileparserObj->calculateTemperatureSpread(29)); // day 30
     }
-
 }
 ?>
