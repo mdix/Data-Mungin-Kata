@@ -1,3 +1,5 @@
+06.11.2011: Reworked the whole thing, it's more specialized now and maps less data. I noted that it's hard to practice tdd if I use private methods and properties, so from now on I'll stay with public to test all methods.
+
 05.11.2011: So I complained about the bad format of weather.dat because of the problems I had parsing it. But hell, I totally ignored YAGNI. Hell, I'm parsing the whole file and build an array with the whole structure, even though the job definition is just to find out the line with the smalles temperature spread. Lesson learned: YAGNI. Will rewrite the whole thing now.
 
 04.11.2011: This method public function getDayNumberWithSmallestTemperatureSpread() {} has to be excluded from FileParser.php - it has nothing todo with parsing the file, it's processing data for a certain task. I think there should be a 'Weather' class or something.
