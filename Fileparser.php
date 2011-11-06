@@ -20,6 +20,7 @@ class Fileparser {
                 $unfilteredValues = explode(' ', $elem[0]);
 
                 // filter empty values and remove non digits (like asteriks)
+                // @TODO: exclude!
                 $values = array();
                 foreach ($unfilteredValues as $value) {
                     if (!empty($value)) {
